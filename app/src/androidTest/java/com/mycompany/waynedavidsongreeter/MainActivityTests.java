@@ -1,6 +1,10 @@
 package com.mycompany.waynedavidsongreeter;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Created by Wayne on 2/21/2016.
@@ -14,5 +18,31 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
     public void testActivityExists() {
         MainActivity activity = getActivity();
         assertNotNull(activity);
+    }
+
+    public void testGreet() {
+        MainActivity activity = getActivity();
+
+        final EditText namedEditText = (EditText) activity.findViewById(R.id.greet_edit_text);
+
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                namedEditText.requestFocus();
+            }
+        });
+
+        getInstrumentation().waitForIdleSync();
+        getInstrumentation().sendStringSync("Jake");
+
+        Button greetButton = (Button) activity.findViewById(R.id.greet_button);
+
+        TouchUtils.clickView(this, greetButton);
+
+        TextView greetMessage =
+                (TextView) activity.findViewById(R.id.message_text_view);
+
+        String actualText = greetMessage.getText().toString();
+        assertEquals("Hello, Jake!", actualText);
     }
 }
