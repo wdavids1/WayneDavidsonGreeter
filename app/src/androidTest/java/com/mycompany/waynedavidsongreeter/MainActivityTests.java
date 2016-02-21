@@ -52,4 +52,35 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         final Button reverseButton = (Button) activity.findViewById(R.id.reverse_button);
         assertEquals(false,reverseButton.isEnabled());
     }
+
+    public void testReverseButtonEnabled() {
+        MainActivity activity = getActivity();
+
+        this.helperAddNameAndClickButton();
+        
+        final Button reverseButton = (Button) activity.findViewById(R.id.reverse_button);
+        assertEquals(true,reverseButton.isEnabled());
+    }
+
+
+
+    private void helperAddNameAndClickButton() {
+        MainActivity activity = getActivity();
+
+        final EditText namedEditText = (EditText) activity.findViewById(R.id.greet_edit_text);
+
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                namedEditText.requestFocus();
+            }
+        });
+
+        getInstrumentation().waitForIdleSync();
+        getInstrumentation().sendStringSync("Jake");
+
+        Button greetButton = (Button) activity.findViewById(R.id.greet_button);
+
+        TouchUtils.clickView(this, greetButton);
+    }
 }
