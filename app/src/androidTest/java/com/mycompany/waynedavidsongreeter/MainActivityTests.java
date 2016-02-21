@@ -57,11 +57,26 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         MainActivity activity = getActivity();
 
         this.helperAddNameAndClickButton();
-        
+
         final Button reverseButton = (Button) activity.findViewById(R.id.reverse_button);
         assertEquals(true,reverseButton.isEnabled());
     }
 
+    public void testReverseGreeting() {
+        MainActivity activity = getActivity();
+
+        this.helperAddNameAndClickButton();
+
+        Button reverseButton = (Button) activity.findViewById(R.id.reverse_button);
+
+        TouchUtils.clickView(this, reverseButton);
+
+        TextView greetMessage =
+                (TextView) activity.findViewById(R.id.message_text_view);
+
+        String actualText = greetMessage.getText().toString();
+        assertEquals("!ekaJ ,olleH", actualText);
+    }
 
 
     private void helperAddNameAndClickButton() {
